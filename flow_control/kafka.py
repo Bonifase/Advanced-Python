@@ -28,6 +28,26 @@ def look(position):
 def quit(position):
     return None
 
+def labyrinth(position, alive):
+    print("You are in a maze of twisty passages, all alike.")
+    return position, alive
+
+def dark_forest_road(position, alive):
+    print("You are on a road in a dark forest. To the north you can see a tower.")
+    return position, alive
+
+def tall_tower(position, alive):
+    print("There is a tall tower here, with no obvious door, A path leads east.")
+    return position, alive
+
+def rabbit_hole(position, alive):
+    print("You fall down a rabbt hole into a labyrinth.")
+    return (0, 0), alive
+
+def lava_pit(position, alive):
+    print("You fall into a lava pit.")
+    return position, False
+
 def play():
 
     position = (0, 0)
@@ -36,9 +56,11 @@ def play():
     while position:
 
         locations = {
-            (0, 0): lambda: print("You are in a maze of twisty passages, all alike."),
-            (1, 0): lambda: print("You are on a road in a dark forest. To the north you can see a tower."),
-            (1, 1): lambda: print("There is a tall tower here, with no obvious door, A path leads east.")
+            (0, 0): labyrinth,
+            (1, 0): dark_forest_road,
+            (1, 1): tall_tower,
+            (2, 1): rabbit_hole,
+            (1, 2): lava_pit
         }
 
         try:
@@ -46,7 +68,11 @@ def play():
         except KeyError as e:
             print("There is nothing here.")
         else:
-            location_action()
+            position, alive = location_action(position, alive)
+
+        if not alive:
+            print("You're dead!")
+            break
 
         command = input()
 
@@ -65,3 +91,11 @@ def play():
             print("I don't understand.")
         else:
             position = command_action(position)
+    else:
+        print("You have chosen to leave the game.")
+
+    print("Game over!")
+
+
+if __name__ == "__main__":
+    play()
