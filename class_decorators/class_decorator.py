@@ -21,6 +21,7 @@ def _wrap_method_with_invariant_checking_proxy(cls, name, predicate):
             raise RuntimeError(f'Class invariant {predicate.__doc__} violated for {self}')
         return result
     setattr(cls, name, invariant_checking_method_decorator)
+
 def not_below_absolute_zero(temprature):
     """Temprature not below abolute zero"""
     return temprature._kelvin >= 0
